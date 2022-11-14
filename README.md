@@ -1,6 +1,6 @@
 # svitore-react
 
-React binding for [svitore](https://github.com/vitlolik/svitore) state
+React binding for [svitore](https://github.com/vitlolik/svitore)
 
 ## Description
 

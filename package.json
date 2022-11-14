@@ -1,5 +1,6 @@
 {
 	"name": "svitore-react",
+	"description": "React binding for svitore",
 	"version": "0.0.1-beta.1",
 	"type": "module",
 	"files": [
@@ -40,5 +41,11 @@
 		"svitore": "^0.0.1-beta.9",
 		"typescript": "^4.8.4",
 		"vite": "^3.2.3"
-	}
+	},
+	"keywords": [
+		"svitore",
+		"svitore-react"
+	],
+	"repository": "https://github.com/vitlolik/svitore-react",
+	"license": "MIT"
 }
