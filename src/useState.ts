@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 import { State } from "svitore";
 
 const useState = <
-	TState extends State,
+	TState extends State<any>,
 	TStateData = ReturnType<TState["get"]>,
 	TSelectorResult = void
 >(

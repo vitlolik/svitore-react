@@ -5,7 +5,7 @@
 	"files": [
 		"dist/*"
 	],
-	"main": "./dist/index.umd.js",
+	"main": "./dist/index.umd.cjs",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
@@ -16,17 +16,16 @@
 	"scripts": {
 		"start": "vite",
 		"build": "vite build && tsc -p tsconfig.build.json",
-		"preview": "vite preview"
-	},
-	"dependencies": {
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
+		"preview": "vite preview",
+		"preversion": "npm run build"
 	},
 	"peerDependencies": {
-		"svitore": "*",
-		"react": "^18"
+		"react": "^18",
+		"svitore": "*"
 	},
 	"devDependencies": {
+		"react": "^18",
+		"react-dom": "^18.2.0",
 		"@types/node": "^18.11.9",
 		"@types/react": "^18.0.24",
 		"@types/react-dom": "^18.0.8",
@@ -38,7 +37,7 @@
 		"eslint-plugin-n": "^15.5.0",
 		"eslint-plugin-promise": "^6.1.1",
 		"eslint-plugin-react": "^7.31.10",
-		"svitore": "^0.0.1-beta.3",
+		"svitore": "^0.0.1-beta.9",
 		"typescript": "^4.8.4",
 		"vite": "^3.2.3"
 	}
