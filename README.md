@@ -1,5 +1,7 @@
 # svitore-react
 
+![example branch parameter](https://github.com/vitlolik/svitore/actions/workflows/ci.yml/badge.svg?branch=master)
+
 React binding for [svitore](https://github.com/vitlolik/svitore)
 
 ## Description

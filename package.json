@@ -17,7 +17,8 @@
 	"scripts": {
 		"start": "vite",
 		"build": "vite build && tsc -p tsconfig.build.json",
-		"preview": "vite preview",
+		"test": "vitest",
+		"test:coverage": "vitest run --coverage",
 		"preversion": "npm run build"
 	},
 	"peerDependencies": {
@@ -25,22 +26,24 @@
 		"svitore": "*"
 	},
 	"devDependencies": {
-		"react": "^18",
-		"react-dom": "^18.2.0",
 		"@types/node": "^18.11.9",
 		"@types/react": "^18.0.24",
 		"@types/react-dom": "^18.0.8",
 		"@typescript-eslint/eslint-plugin": "^5.42.1",
 		"@vitejs/plugin-react": "^2.2.0",
+		"@vitest/coverage-c8": "^0.25.2",
 		"eslint": "^8.27.0",
 		"eslint-config-standard-with-typescript": "^23.0.0",
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-n": "^15.5.0",
 		"eslint-plugin-promise": "^6.1.1",
 		"eslint-plugin-react": "^7.31.10",
+		"react": "^18",
+		"react-dom": "^18.2.0",
 		"svitore": "^0.0.1-beta.9",
 		"typescript": "^4.8.4",
-		"vite": "^3.2.3"
+		"vite": "^3.2.3",
+		"vitest": "^0.25.2"
 	},
 	"keywords": [
 		"svitore",
