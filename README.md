@@ -20,25 +20,24 @@ npm i svitore svitore-react
 
 ```js
 // model.ts
-import { State, Event } from 'svitore';
+import { State, Event } from "svitore";
 
-export const incrementEvent = new Event();
+export const increment = new Event();
 
-export const $count = new State(0)
-  .on(incrementEvent, (, state) => state + 1);
+export const countState = new State(0);
+
+increment.listen(() => countState.change((state) => state + 1));
 ```
 
 ```js
 // Component.ts
 import { useState } from "svitore-react";
-import { $count, incrementEvent } from "./model";
+import { countState, increment } from "./model";
 
 const App = () => {
-  const count = useState($count);
+  const count = useState(countState);
 
-  return (
-    <button onClick={() => incrementEvent.fire()}>count is {count}</button>
-  );
+  return <button onClick={() => increment.dispatch()}>count is {count}</button>;
 };
 ```
 
@@ -49,14 +48,12 @@ You can pass a selector function in the `useState`
 ```js
 // Component.ts
 import { useState } from "svitore-react";
-import { $count, incrementEvent } from "./model";
+import { countState, increment } from "./model";
 
 const App = () => {
   // count will be something like this: 0.00, 1.00, 2.00, ...
-  const count = useState($count, (count) => count.toFixed(2));
+  const count = useState(countState, (count) => count.toFixed(2));
 
-  return (
-    <button onClick={() => incrementEvent.fire()}>count is {count}</button>
-  );
+  return <button onClick={() => increment.dispatch()}>count is {count}</button>;
 };
 ```
