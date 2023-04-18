@@ -1,21 +1,21 @@
 import './App.css'
 import { useState } from '../src';
 
-import { $count, increment, reset } from './counter.model';
+import { countState, increment, reset } from './counter.model';
 
-function App() {
-	const count = useState($count);
+function App(): JSX.Element {
+	const count = useState(countState);
 
 	return (
 		<div className="App">
 			<h1>svitore-react</h1>
 			<div className="card">
-				<button onClick={() => increment.fire()}>
+				<button onClick={() => increment.dispatch()}>
 					count is {count}
 				</button>
 			</div>
 			<div className="card">
-				<button onClick={() => reset.fire()}>
+				<button onClick={() => reset.dispatch()}>
 					reset
 				</button>
 			</div>

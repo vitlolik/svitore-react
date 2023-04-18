@@ -11,7 +11,9 @@ const useState = <
 ): TSelectorResult extends void ? TStateData : TSelectorResult =>
 	useSyncExternalStore(
 		state.subscribe.bind(state),
-		selector ? () => selector(state.get()) : state.get.bind(state)
+		selector
+			? (): TSelectorResult => selector(state.get())
+			: state.get.bind(state)
 	);
 
 export { useState };
