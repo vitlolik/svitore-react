@@ -20,7 +20,8 @@
 		"sourceType": "module",
 		"project": [
 			"tsconfig.json",
-			"tsconfig.build.json"
+			"tsconfig.build.json",
+			"tsconfig.node.json"
 		]
 	},
 	"settings": {

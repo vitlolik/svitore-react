@@ -11,10 +11,11 @@ export default defineConfig({
 			formats: ["es", "cjs", "umd"],
 		},
 		rollupOptions: {
-			external: ["react"],
+			external: ["react", "svitore"],
 			output: {
 				globals: {
 					react: "React",
+					svitore: "svitore",
 				},
 			},
 		},
