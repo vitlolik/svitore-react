@@ -1,7 +1,7 @@
 {
 	"name": "svitore-react",
 	"description": "React binding for svitore",
-	"version": "0.0.2-0",
+	"version": "0.0.3-0",
 	"type": "module",
 	"files": [
 		"dist/*"
