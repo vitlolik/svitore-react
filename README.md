@@ -20,21 +20,11 @@ npm i svitore svitore-react
 
 ## Usage
 
-### Usual
+### useState
+
+**Usual**
 
 ```js
-// model.ts
-import { State, Event } from "svitore";
-
-export const increment = new Event();
-
-export const countState = new State(0);
-
-increment.listen(() => countState.change((state) => state + 1));
-```
-
-```js
-// Component.ts
 import { useState } from "svitore-react";
 import { countState, increment } from "./model";
 
@@ -45,19 +35,45 @@ const App = () => {
 };
 ```
 
-### Advanced
+**Advanced**
 
 You can pass a selector function in the `useState`
 
 ```js
-// Component.ts
 import { useState } from "svitore-react";
 import { countState, increment } from "./model";
 
 const App = () => {
-  // count will be something like this: 0.00, 1.00, 2.00, ...
   const count = useState(countState, (count) => count.toFixed(2));
 
   return <button onClick={() => increment.dispatch()}>count is {count}</button>;
+};
+```
+
+### connect
+
+```js
+import { useState } from "svitore-react";
+import { countState, increment } from "./model";
+import { CountButton } from "./count-button";
+
+const CountButtonConnected = connect(
+  CountButton,
+  { count: countState, increment },
+  {
+    onMount: (props) => {
+      console.log("MOUNT", props);
+    },
+    onUnMount: (props) => {
+      console.log("UNMOUNT", props);
+    },
+    onUpdate: (props, prevProps) => {
+      console.log("ONUPDATE", { props, prevProps });
+    },
+  }
+);
+
+const App = () => {
+  return <CountButtonConnected />;
 };
 ```
