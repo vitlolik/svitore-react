@@ -36,7 +36,7 @@
 		"eslint-plugin-react": "^7.32.2",
 		"react": "^18",
 		"react-dom": "^18.2.0",
-		"svitore": "^0.0.4",
+		"svitore": "^0.0.5",
 		"typescript": "^5.0.4",
 		"vite": "^4.2.2"
 	},
