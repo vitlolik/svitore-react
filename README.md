@@ -53,7 +53,7 @@ const App = () => {
 ### connect
 
 ```js
-import { useState } from "svitore-react";
+import { connect } from "svitore-react";
 import { countState, increment } from "./model";
 import { CountButton } from "./count-button";
 
