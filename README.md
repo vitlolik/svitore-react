@@ -14,7 +14,11 @@ Provides a single `useState` function for subscribe and getting the state
 npm i svitore svitore-react
 ```
 
-## Example
+## App examples
+
+- [Github user search](https://codesandbox.io/p/sandbox/search-github-users-forked-93dh8n)
+
+## Usage
 
 ### Usual
 

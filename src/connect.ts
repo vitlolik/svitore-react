@@ -80,8 +80,8 @@ const connect = <Props extends BaseProps>(
 			events?.onMount?.(propsRef.current);
 
 			return () => {
-				events?.onUnMount?.(propsRef.current);
 				reaction.release();
+				events?.onUnMount?.(propsRef.current);
 			};
 		}, []);
 
