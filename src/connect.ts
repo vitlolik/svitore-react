@@ -73,11 +73,11 @@ const connect = <Props extends BaseProps>(
 		propsRef.current = mergedProps;
 
 		useEffect(() => {
-			events?.onMount?.(propsRef.current);
 			const reaction = new Reaction(
 				...stateList.map(({ state }) => state),
 				() => updateState(getBoundState(stateList))
 			);
+			events?.onMount?.(propsRef.current);
 
 			return () => {
 				events?.onUnMount?.(propsRef.current);
