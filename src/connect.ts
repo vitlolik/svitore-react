@@ -6,7 +6,7 @@ import {
 	memo,
 	useRef,
 } from "react";
-import { State, Event, Reaction } from "svitore";
+import { State, Event, ComputeState } from "svitore";
 
 type BaseProps = Record<string, any>;
 
@@ -20,12 +20,15 @@ type StateList<Props> = { key: keyof Props; state: State<any> }[];
 
 const getBoundState = <Props extends BaseProps>(
 	stateList: StateList<Props>
-): BaseProps =>
-	stateList.reduce<Record<keyof Props, any>>((result, item) => {
-		result[item.key] = item.state.get();
+): BaseProps => {
+	const result: any = {};
 
-		return result;
-	}, {} as any);
+	for (const stateItem of stateList) {
+		result[stateItem.key] = stateItem.state.get();
+	}
+
+	return result;
+};
 
 const usePreviousProps = <Props extends BaseProps>(
 	props: Props
@@ -73,14 +76,14 @@ const connect = <Props extends BaseProps>(
 		propsRef.current = mergedProps;
 
 		useEffect(() => {
-			const reaction = new Reaction(
+			const computeState = new ComputeState(
 				...stateList.map(({ state }) => state),
 				() => updateState(getBoundState(stateList))
 			);
 			events?.onMount?.(propsRef.current);
 
 			return () => {
-				reaction.release();
+				computeState.release();
 				events?.onUnMount?.(propsRef.current);
 			};
 		}, []);
