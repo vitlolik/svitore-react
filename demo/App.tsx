@@ -2,22 +2,15 @@ import './App.css'
 import { connect, useState } from '../src';
 
 import { countState, increment, reset, inputState, changeInput } from './counter.model';
-import { useEffect } from 'react';
 
 const Title = ({ count }: { count: number }): JSX.Element => <h1>svitore-react {count}</h1>
 
 const Input = ({ value, change }: { value: string; change: (value: string) => void }): JSX.Element => {
-	useEffect(() => {
-		console.log('MOUNT Input')
-	}, []);
 	return (<input key="input" type="text" value={value} onChange={e => { change(e.target.value) }} />);
 }
 
 const CountButton = ({ count, increment }: { count: number; input?: string; increment: () => void }): JSX.Element => {
-
-	useEffect(() => {
-		console.log('MOUNT CountButton')
-	}, []);
+	console.log('render CountButton')
 
 	return (
 		<button onClick={increment}>
@@ -39,13 +32,13 @@ const TitleConnected = connect(Title, { count: countState });
 
 const CountButtonConnected = connect(CountButton, { count: countState, increment }, {
 	onMount: (props) => {
-		// console.log('MOUNT', props)
+		console.log('MOUNT CountButtonConnected', props)
 	},
 	onUnMount: (props) => {
-		// console.log('UNMOUNT', props)
+		console.log('UNMOUNT CountButtonConnected', props)
 	},
 	onUpdate: (props, prevProps) => {
-		// console.log('ONUPDATE', { props, prevProps })
+		console.log('ONUPDATE CountButtonConnected', { props, prevProps })
 	}
 });
 

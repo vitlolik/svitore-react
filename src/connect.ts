@@ -5,6 +5,7 @@ import {
 	useState,
 	memo,
 	useRef,
+	useMemo,
 } from "react";
 import { State, Event, ComputeState } from "svitore";
 
@@ -30,6 +31,34 @@ const getBoundState = <Props extends BaseProps>(
 	return result;
 };
 
+const parsePayload = <Props extends BaseProps>(
+	payload: EntitiesPayload<Props>,
+	propsKeys: string
+): {
+	stateList: {
+		key: keyof Props;
+		state: State<any>;
+	}[];
+	boundEvents: any;
+} => {
+	const stateList: { key: keyof Props; state: State<any> }[] = [];
+	const boundEvents = {} as any;
+	const propsKeysList = propsKeys.split(",");
+
+	for (const key in payload) {
+		if (propsKeysList.includes(key)) continue;
+
+		const entity = payload[key];
+		if (entity instanceof State) {
+			stateList.push({ key, state: entity });
+		} else if (entity instanceof Event) {
+			boundEvents[key] = (param: any) => entity.dispatch(param);
+		}
+	}
+
+	return { stateList, boundEvents };
+};
+
 const usePreviousProps = <Props extends BaseProps>(
 	props: Props
 ): Props | undefined => {
@@ -45,6 +74,20 @@ const usePreviousProps = <Props extends BaseProps>(
 const getConnectedComponentName = (Component: FunctionComponent<any>): string =>
 	`svitore(${Component.displayName || Component.name})`;
 
+const getPropsKeysAsString = <Props extends BaseProps>(
+	props: Partial<Props>
+): string => {
+	let keys = "";
+
+	for (const key in props) {
+		if (props[key] !== undefined) {
+			keys += key + ",";
+		}
+	}
+
+	return keys;
+};
+
 const connect = <Props extends BaseProps>(
 	Component: FunctionComponent<Props>,
 	payload: EntitiesPayload<Props>,
@@ -54,19 +97,12 @@ const connect = <Props extends BaseProps>(
 		onUpdate?: (props: Props, prevProps: Props | undefined) => void;
 	}
 ): FunctionComponent<Partial<Props>> => {
-	const stateList: { key: keyof Props; state: State<any> }[] = [];
-	const boundEvents = {} as any;
-
-	for (const key in payload) {
-		const entity = payload[key];
-		if (entity instanceof State) {
-			stateList.push({ key, state: entity });
-		} else if (entity instanceof Event) {
-			boundEvents[key] = (param: any) => entity.dispatch(param);
-		}
-	}
-
 	const Connected = memo<Partial<Props>>((props) => {
+		const propsKeys = getPropsKeysAsString(props);
+		const { stateList, boundEvents } = useMemo(
+			() => parsePayload(payload, propsKeys),
+			[propsKeys]
+		);
 		const [boundState, updateState] = useState(() => getBoundState(stateList));
 		const mergedProps: Props = { ...boundState, ...boundEvents, ...props };
 		const isInitialMountRef = useRef(true);
@@ -76,17 +112,19 @@ const connect = <Props extends BaseProps>(
 		propsRef.current = mergedProps;
 
 		useEffect(() => {
+			events?.onMount?.(propsRef.current);
+
+			return () => events?.onUnMount?.(propsRef.current);
+		}, []);
+
+		useEffect(() => {
 			const computeState = new ComputeState(
 				...stateList.map(({ state }) => state),
 				() => updateState(getBoundState(stateList))
 			);
-			events?.onMount?.(propsRef.current);
 
-			return () => {
-				computeState.release();
-				events?.onUnMount?.(propsRef.current);
-			};
-		}, []);
+			return () => computeState.release();
+		}, [stateList]);
 
 		if (events?.onUpdate) {
 			useEffect(
