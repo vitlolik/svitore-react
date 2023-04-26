@@ -1,12 +1,9 @@
 # svitore-react
 
 ![example branch parameter](https://github.com/vitlolik/svitore/actions/workflows/ci.yml/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/vitlolik/svitore/branch/master/graph/badge.svg)](https://codecov.io/gh/vitlolik/svitore)
 
 React binding for [svitore](https://github.com/vitlolik/svitore)
-
-## Description
-
-Provides a single `useState` function for subscribe and getting the state
 
 ## Installation
 
