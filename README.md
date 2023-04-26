@@ -1,7 +1,7 @@
 # svitore-react
 
 ![example branch parameter](https://github.com/vitlolik/svitore/actions/workflows/ci.yml/badge.svg?branch=master)
-[![codecov](https://codecov.io/gh/vitlolik/svitore/branch/master/graph/badge.svg)](https://codecov.io/gh/vitlolik/svitore)
+[![codecov](https://codecov.io/gh/vitlolik/svitore-react/branch/master/graph/badge.svg)](https://codecov.io/gh/vitlolik/svitore)
 
 React binding for [svitore](https://github.com/vitlolik/svitore)
 
