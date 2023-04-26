@@ -20,7 +20,7 @@
 		"lint": "eslint 'src/**/*.ts' 'demo/**/*.ts'",
 		"check-size": "size-limit",
 		"test": "vitest --environment jsdom",
-		"test:coverage": "npm run test -- --coverage",
+		"test:coverage": "vitest run --environment jsdom --coverage",
 		"preversion": "npm run test:coverage && npm run build && npm run check-size"
 	},
 	"peerDependencies": {
