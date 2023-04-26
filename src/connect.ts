@@ -111,17 +111,21 @@ const connect = <Props extends BaseProps>(
 
 		propsRef.current = mergedProps;
 
-		useEffect(() => {
-			events?.onMount?.(propsRef.current);
+		if (events?.onMount || events?.onUnMount) {
+			useEffect(() => {
+				events.onMount?.(propsRef.current);
 
-			return () => events?.onUnMount?.(propsRef.current);
-		}, []);
+				return () => events.onUnMount?.(propsRef.current);
+			}, []);
+		}
 
 		useEffect(() => {
 			const computeState = new ComputeState(
 				...stateList.map(({ state }) => state),
-				() => updateState(getBoundState(stateList))
+				() => ({})
 			);
+
+			computeState.subscribe(() => updateState(getBoundState(stateList)));
 
 			return () => computeState.release();
 		}, [stateList]);

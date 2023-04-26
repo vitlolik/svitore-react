@@ -1,17 +1,39 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, test } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { State } from "svitore";
-import { useSyncExternalStore } from "react";
+import "@testing-library/jest-dom/matchers";
+
 import { useState } from "./useState";
 
 describe("useState", () => {
-	it("should call useSyncExternalStore from react", () => {
-		vi.mock("react", () => {
-			return { useSyncExternalStore: vi.fn() };
-		});
+	test("should return value from state", () => {
+		const state = new State("test value");
+		const { result } = renderHook(() => useState(state));
 
-		const $test = new State("");
-		useState($test);
-		expect(useSyncExternalStore).toHaveBeenCalledTimes(1);
-		vi.unmock("react");
+		expect(result.current).toBe("test value");
+	});
+
+	test("should update component", () => {
+		const state = new State("test value");
+		const { result } = renderHook(() => useState(state));
+
+		act(() => {
+			state.set("new test value");
+		});
+		expect(result.current).toBe("new test value");
+
+		act(() => {
+			state.set("another new test value");
+		});
+		expect(result.current).toBe("another new test value");
+	});
+
+	test("should call selector function", () => {
+		const state = new State("test value");
+		const { result } = renderHook(() =>
+			useState(state, (value) => value.toUpperCase())
+		);
+
+		expect(result.current).toBe("TEST VALUE");
 	});
 });

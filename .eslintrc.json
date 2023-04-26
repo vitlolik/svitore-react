@@ -31,6 +31,10 @@
 	},
 	"rules": {
 		"@typescript-eslint/no-explicit-any": "off",
+		"no-mixed-spaces-and-tabs": [
+			"error",
+			"smart-tabs"
+		],
 		"@typescript-eslint/explicit-function-return-type": [
 			"error",
 			{

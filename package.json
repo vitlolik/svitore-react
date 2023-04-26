@@ -17,14 +17,20 @@
 	"scripts": {
 		"start": "vite",
 		"build": "vite build && tsc -p tsconfig.build.json",
-		"preversion": "npm run build",
-		"lint": "eslint 'src/**/*.ts' 'demo/**/*.ts'"
+		"lint": "eslint 'src/**/*.ts' 'demo/**/*.ts'",
+		"check-size": "size-limit",
+		"test": "vitest --environment jsdom",
+		"test:coverage": "npm run test -- --coverage",
+		"preversion": "npm run test:coverage && npm run build && npm run check-size"
 	},
 	"peerDependencies": {
-		"react": "^18",
+		"react": "18",
 		"svitore": "*"
 	},
 	"devDependencies": {
+		"@size-limit/preset-small-lib": "^8.2.4",
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^14.0.0",
 		"@types/node": "^18.15.11",
 		"@types/react": "^18.0.37",
 		"@types/react-dom": "^18.0.11",
@@ -36,10 +42,19 @@
 		"eslint-plugin-react": "^7.32.2",
 		"react": "^18",
 		"react-dom": "^18.2.0",
+		"size-limit": "^8.2.4",
 		"svitore": "^0.0.5",
 		"typescript": "^5.0.4",
-		"vite": "^4.2.2"
+		"vite": "^4.2.2",
+		"vitest": "^0.30.1"
 	},
+	"size-limit": [
+		{
+			"path": "./dist/index.js",
+			"import": "*",
+			"limit": "702 B"
+		}
+	],
 	"keywords": [
 		"svitore",
 		"svitore-react"
