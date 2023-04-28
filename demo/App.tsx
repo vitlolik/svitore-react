@@ -9,7 +9,7 @@ const Input = ({ value, change }: { value: string; change: (value: string) => vo
 	return (<input key="input" type="text" value={value} onChange={e => { change(e.target.value) }} />);
 }
 
-const CountButton = ({ count, increment }: { count: number; input?: string; increment: () => void }): JSX.Element => {
+const CountButton = ({ count, increment }: { count: number; increment: () => void }): JSX.Element => {
 	console.log('render CountButton')
 
 	return (
@@ -54,7 +54,7 @@ function App(): JSX.Element {
 			<TitleConnected />
 			<ConnectedInput />
 			<div className="card">
-				{inputValue === 'hide' ? null : <CountButtonConnected input={inputValue} />}
+				{inputValue === 'hide' ? null : <CountButtonConnected />}
 			</div>
 			<div className="card">
 				<ConnectedResetButton />

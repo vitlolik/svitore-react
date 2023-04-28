@@ -11,11 +11,22 @@ import { State, Event, ComputeState } from "svitore";
 
 type BaseProps = Record<string, any>;
 
-type EntitiesPayload<T extends BaseProps> = {
+type EntitiesPayload<T extends BaseProps> = Partial<{
 	[K in keyof T]: T[K] extends (...args: any[]) => any
 		? Event<Parameters<T[K]>[0] extends undefined ? void : Parameters<T[K]>[0]>
 		: State<T[K]>;
+}>;
+
+type ExtractEntityTypes<T> = {
+	[K in keyof T]: T[K] extends State<infer U>
+		? U
+		: T[K] extends Event<infer U>
+		? (payload: U) => void
+		: never;
 };
+
+type MergeObjects<T, U> = Partial<Pick<T & U, keyof T & keyof U>> &
+	Omit<T & U, keyof T & keyof U>;
 
 type StateList<Props> = { key: keyof Props; state: State<any> }[];
 
@@ -71,7 +82,7 @@ const usePreviousProps = <Props extends BaseProps>(
 	return ref.current;
 };
 
-const getConnectedComponentName = (Component: FunctionComponent<any>): string =>
+const getComponentName = (Component: FunctionComponent<any>): string =>
 	`svitore(${Component.displayName || Component.name})`;
 
 const getPropsKeysAsString = <Props extends BaseProps>(
@@ -88,27 +99,36 @@ const getPropsKeysAsString = <Props extends BaseProps>(
 	return keys;
 };
 
-const connect = <Props extends BaseProps>(
+const connect = <
+	Props extends BaseProps,
+	MapStatePayload extends EntitiesPayload<Props>
+>(
 	Component: FunctionComponent<Props>,
-	payload: EntitiesPayload<Props>,
+	payload: MapStatePayload,
 	events?: {
 		onMount?: (props: Props) => void;
 		onUnMount?: (props: Props) => void;
 		onUpdate?: (props: Props, prevProps: Props | undefined) => void;
 	}
-): FunctionComponent<Partial<Props>> => {
-	const Connected = memo<Partial<Props>>((props) => {
+): FunctionComponent<
+	MergeObjects<Props, ExtractEntityTypes<MapStatePayload>>
+> => {
+	const Connected = memo<
+		MergeObjects<Props, ExtractEntityTypes<MapStatePayload>>
+	>((props) => {
 		const propsKeys = getPropsKeysAsString(props);
 		const { stateList, boundEvents } = useMemo(
 			() => parsePayload(payload, propsKeys),
 			[propsKeys]
 		);
 		const [boundState, updateState] = useState(() => getBoundState(stateList));
-		const mergedProps: Props = { ...boundState, ...boundEvents, ...props };
-		const isInitialMountRef = useRef(true);
-		const propsRef = useRef<Props>(mergedProps);
-		const prevProps = usePreviousProps(mergedProps);
-
+		const mergedProps: Props = Object.assign(
+			{},
+			boundState,
+			boundEvents,
+			props
+		);
+		const propsRef = useRef(mergedProps);
 		propsRef.current = mergedProps;
 
 		if (events?.onMount || events?.onUnMount) {
@@ -131,6 +151,9 @@ const connect = <Props extends BaseProps>(
 		}, [stateList]);
 
 		if (events?.onUpdate) {
+			const isInitialMountRef = useRef(true);
+			const prevProps = usePreviousProps(mergedProps);
+
 			useEffect(
 				() => {
 					if (isInitialMountRef.current) {
@@ -146,7 +169,7 @@ const connect = <Props extends BaseProps>(
 		return createElement(Component, mergedProps);
 	});
 
-	Connected.displayName = getConnectedComponentName(Component);
+	Connected.displayName = getComponentName(Component);
 
 	return Connected;
 };
