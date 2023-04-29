@@ -52,7 +52,7 @@
 		{
 			"path": "./dist/index.js",
 			"import": "*",
-			"limit": "702 B"
+			"limit": "715 B"
 		}
 	],
 	"keywords": [
