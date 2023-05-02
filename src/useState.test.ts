@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { State } from "svitore";
-import "@testing-library/jest-dom/matchers";
 
 import { useState } from "./useState";
 
