@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from "react";
-import { State } from "svitore";
+import { AbstractState } from "svitore";
 
 const useState = <
-	TState extends State<any>,
+	TState extends AbstractState<any>,
 	TStateData = ReturnType<TState["get"]>,
 	TSelectorResult = void
 >(

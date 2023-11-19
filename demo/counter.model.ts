@@ -1,24 +1,13 @@
-import { State, Event, ComputeState } from "svitore";
+import { Svitore } from "svitore";
 
-const increment = new Event();
-const reset = new Event();
-const changeInput = new Event<string>();
+const svitoreReactModule = Svitore.initModule("svitore react module");
 
-const state = new State({ count: 0, input: "" });
+const increment = svitoreReactModule.initEvent();
+const reset = svitoreReactModule.initEvent();
 
-const countState = new ComputeState(state, ({ count }) => count);
-const inputState = new ComputeState(state, ({ input }) => input);
+const countState = svitoreReactModule
+	.initState(0)
+	.changeOn(increment, (_, state) => state + 1)
+	.resetOn(reset);
 
-increment.subscribe(() => {
-	state.change((state) => ({ ...state, count: state.count + 1 }));
-});
-
-changeInput.subscribe((inputValue) => {
-	state.change((state) => ({ ...state, input: inputValue }));
-});
-
-reset.subscribe(() => {
-	state.reset();
-});
-
-export { increment, countState, reset, changeInput, inputState };
+export { increment, countState, reset };

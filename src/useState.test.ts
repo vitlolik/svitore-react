@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { State } from "svitore";
+import { Event, State } from "svitore";
 
 import { useState } from "./useState";
 
@@ -13,16 +13,17 @@ describe("useState", () => {
 	});
 
 	test("should update component", () => {
-		const state = new State("test value");
+		const changeEvent = new Event<string>();
+		const state = new State("test value").changeOn(changeEvent);
 		const { result } = renderHook(() => useState(state));
 
 		act(() => {
-			state.set("new test value");
+			changeEvent.dispatch("new test value");
 		});
 		expect(result.current).toBe("new test value");
 
 		act(() => {
-			state.set("another new test value");
+			changeEvent.dispatch("another new test value");
 		});
 		expect(result.current).toBe("another new test value");
 	});
