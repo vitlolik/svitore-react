@@ -1,8 +1,16 @@
 import { FC } from 'react';
 import './App.css'
-import { useState } from '../src';
+import { useState, createConnection } from '../src';
 
 import { countState, increment, reset } from './counter.model';
+
+const { connection, useConnection } = createConnection<number>();
+
+connection.state.subscribe(v => console.log('state updated', v));
+
+connection.mounted.subscribe(v => console.log('mounted', v))
+
+connection.unmounted.subscribe(v => console.log('unmounted', v))
 
 
 const Title: FC = () => {
@@ -13,6 +21,7 @@ const Title: FC = () => {
 
 const CountButton: FC = () => {
 	const count = useState(countState);
+	useConnection(count)
 
 	return (
 		<button onClick={() => increment.dispatch()}>
@@ -30,11 +39,13 @@ const ResetButton: FC = () => {
 }
 
 function App(): JSX.Element {
+	const count = useState(countState);
+
 	return (
 		<div className="App">
 			<Title />
 			<div className="card">
-				<CountButton />
+				{count < 5 && <CountButton />}
 			</div>
 			<div className="card">
 				<ResetButton />

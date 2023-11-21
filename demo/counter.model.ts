@@ -1,12 +1,12 @@
 import { Svitore } from "svitore";
 
-const svitoreReactModule = Svitore.initModule("svitore react module");
+const svitoreReactModule = Svitore.createModule("svitore react module");
 
-const increment = svitoreReactModule.initEvent();
-const reset = svitoreReactModule.initEvent();
+const increment = svitoreReactModule.createEvent();
+const reset = svitoreReactModule.createEvent();
 
 const countState = svitoreReactModule
-	.initState(0)
+	.createState(3)
 	.changeOn(increment, (_, state) => state + 1)
 	.resetOn(reset);
 
