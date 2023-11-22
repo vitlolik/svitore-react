@@ -1,14 +1,22 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import dts from "vite-plugin-dts";
 
 export default defineConfig({
-	plugins: [react()],
+	plugins: [
+		react(),
+		dts({
+			exclude: ["demo"],
+			rollupTypes: true,
+		}),
+	],
 	build: {
 		lib: {
 			entry: "./src/index.ts",
 			fileName: "index",
-			name: "svitore-react",
-			formats: ["es", "cjs", "umd"],
+			formats: ["es"],
 		},
 		rollupOptions: {
 			external: ["react", "svitore"],
@@ -19,5 +27,8 @@ export default defineConfig({
 				},
 			},
 		},
+	},
+	test: {
+		environment: "jsdom",
 	},
 });

@@ -8,8 +8,7 @@
 	],
 	"extends": [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:react/recommended"
+		"plugin:@typescript-eslint/recommended"
 	],
 	"plugins": [
 		"@typescript-eslint"
@@ -20,14 +19,8 @@
 		"sourceType": "module",
 		"project": [
 			"tsconfig.json",
-			"tsconfig.build.json",
 			"tsconfig.node.json"
 		]
-	},
-	"settings": {
-		"react": {
-			"version": "detect"
-		}
 	},
 	"rules": {
 		"@typescript-eslint/no-explicit-any": "off",
@@ -41,6 +34,11 @@
 				"allowExpressions": true
 			}
 		],
-		"react/react-in-jsx-scope": "off"
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{
+				"argsIgnorePattern": "^_"
+			}
+		]
 	}
 }

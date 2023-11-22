@@ -15,10 +15,7 @@ const createConnection = <Props>(): CreateConnectionReturn<Props> => {
 	const mounted = new Event<Props>();
 	const changed = new Event<Props>();
 	const unmounted = new Event<Props>();
-	const state = new State<Props | undefined>(undefined)
-		.changeOn(mounted)
-		.changeOn(changed)
-		.changeOn(unmounted);
+	const state = new State<Props | undefined>(undefined).changeOn(changed);
 
 	const connection = {
 		state,
