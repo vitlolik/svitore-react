@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import './App.css'
-import { useState, createConnection } from '../src';
+import { useState, createConnection, useEvent } from '../src';
 
 import { countState, increment, reset } from './counter.model';
 
@@ -21,10 +21,11 @@ const Title: FC = () => {
 
 const CountButton: FC = () => {
 	const count = useState(countState);
+	const incrementCount = useEvent(increment);
 	useConnection(count)
 
 	return (
-		<button onClick={() => increment.dispatch()}>
+		<button onClick={incrementCount}>
 			count is {count}
 		</button>
 	)
