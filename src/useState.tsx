@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { AbstractState } from "svitore";
 import { useSvitoreContext } from './Context';
 
@@ -12,11 +12,15 @@ const useState = <
 ): TSelectorResult extends void ? TStateData : TSelectorResult => {
 	state = useSvitoreContext()?.get(state) as TState | undefined ?? state
 
+	const getState = useMemo(() => state.get.bind(state), []);
+	const subscribe = useMemo(() => state.subscribe.bind(state), [])
+
 	return useSyncExternalStore(
-		state.subscribe.bind(state),
+		subscribe,
 		selector
 			? (): TSelectorResult => selector(state.get())
-			: state.get.bind(state)
+			: getState,
+		getState
 	)
 };
 
