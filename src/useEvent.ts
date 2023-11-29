@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useMemo } from "react";
 import { AbstractEvent } from "svitore";
 
 import { useSvitoreContext } from "./Context";
@@ -9,9 +9,7 @@ const useEvent = <T>(event: AbstractEvent<T>): Dispatch<T> => {
 	event =
 		(useSvitoreContext()?.get(event) as AbstractEvent<T> | undefined) ?? event;
 
-	const dispatch = useCallback((payload: T): void => {
-		event.dispatch(payload);
-	}, []);
+	const dispatch = useMemo(() => event.dispatch.bind(event), []);
 
 	return dispatch as Dispatch<T>;
 };

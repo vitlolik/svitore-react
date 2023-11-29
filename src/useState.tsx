@@ -13,7 +13,7 @@ const useState = <
 	state = useSvitoreContext()?.get(state) as TState | undefined ?? state
 
 	const getState = useMemo(() => state.get.bind(state), []);
-	const subscribe = useMemo(() => state.subscribe.bind(state), [])
+	const subscribe = useMemo(() => state.subscribe.bind(state), []);
 
 	return useSyncExternalStore(
 		subscribe,
